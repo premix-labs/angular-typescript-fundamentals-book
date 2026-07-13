@@ -1,0 +1,32 @@
+---
+title: เริ่มต้นหนังสือ Angular Fundamentals
+description: ขอบเขต วิธีเรียน และโปรเจกต์ Product Catalog ที่จะพัฒนาไปตลอดทั้งเล่ม
+chapter: 0
+icon: book-open
+tags: [angular, typescript, introduction]
+---
+
+# Angular Fundamentals with TypeScript
+
+หนังสือฉบับนี้ใช้ Angular 22 เป็น baseline โดยสอน standalone components, zoneless rendering, Signals, Signal Forms และบริการแบบ `@Service()`/`inject()` เวอร์ชันของ learner project จะถูกตรึงไว้ใน lockfile เพื่อให้คำสั่งและตัวอย่างทำซ้ำได้
+
+หนังสือเล่มนี้พาคุณสร้าง `product-catalog-angular` ตั้งแต่ Angular project เปล่าไปจนถึง SPA ที่มี routing, forms, REST API และ automated tests
+
+## สิ่งที่ควรรู้ก่อนเริ่ม
+
+- อ่าน TypeScript แบบ strict ได้
+- เข้าใจ function, object, array, union, module, Promise และ browser events
+- อ่าน HTML และ CSS พื้นฐานได้
+
+หากยังไม่พร้อม ให้เรียน `TypeScript Fundamentals for Frontend Developer` ก่อน หนังสือเล่มนี้จะทบทวนเฉพาะ typing ที่เกี่ยวกับ Angular
+
+## วิธีเรียน
+
+1. ทำตามบทตามลำดับ เพราะทุกบทต่อยอดโปรเจกต์เดียวกัน
+2. ใช้ URL ที่ Angular CLI แสดงจริง ไม่สมมติ port
+3. รันคำสั่งตรวจท้ายบทและทำ checkpoint ด้วยตนเอง
+4. ใช้ตัวอย่างใน `examples/` สำหรับตรวจเทียบหลังลองแก้ปัญหาแล้ว
+
+## ขอบเขตโปรเจกต์
+
+คุณจะสร้างหน้ารายการ รายละเอียด เพิ่ม และแก้ไขสินค้า รวมถึงค้นหา กรอง ปรับ stock และเปิดหรือปิดสถานะสินค้า โดยใช้ mock API เป็นค่าเริ่มต้นและสลับไป REST API จริงได้ภายหลัง
