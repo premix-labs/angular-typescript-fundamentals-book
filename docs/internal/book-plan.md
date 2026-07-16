@@ -3,10 +3,12 @@
 ## Book Identity
 
 - Working title: Angular Fundamentals with TypeScript
+- Repository name: `angular-typescript-fundamentals-book`
+- Content language: th
 - Target reader: ผู้ที่รู้ TypeScript ตาม `typescript-fundamentals-for-frontend-book` หรือเทียบเท่าและยังไม่เคยใช้ Angular
 - Final outcome: สร้าง ทดสอบ และ build Angular 22 SPA ที่เชื่อม REST API โดยเข้าใจ component/template/state/DI/reactive flow จริง
 - Progressive/final project: `product-catalog-angular`
-- Version baseline: Angular/CLI 22.0.6, Node.js 24 LTS, TypeScript 6.0.x and RxJS 7.8.x
+- Version baseline: Angular/CLI 22.0.7, Node.js 24 LTS, TypeScript 6.0.x and RxJS 7.8.x
 - Core stack: standalone components, zoneless change detection, TypeScript strict, Signals, Signal Forms, `@Service()`/`inject()`, Angular Router, HttpClient, RxJS, Vitest, TestBed and MSW
 
 ## Teaching Promise

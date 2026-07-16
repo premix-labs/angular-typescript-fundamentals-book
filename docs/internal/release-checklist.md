@@ -10,7 +10,7 @@
 
 ## Angular Data Flow
 
-- [ ] Angular/CLI 22.0.6 and compatible Node/TypeScript versions are pinned in the learner lockfile
+- [ ] Angular/CLI 22.0.7 and compatible Node/TypeScript versions are pinned in the learner lockfile
 - [ ] standalone architecture is consistent; no accidental NgModule-first detour
 - [ ] zoneless behavior is explicit; no lesson depends on Zone.js assumptions
 - [ ] inputs are read-only and outputs represent explicit events

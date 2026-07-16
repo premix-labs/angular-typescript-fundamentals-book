@@ -1,7 +1,12 @@
 dist/
 .astro/
 node_modules/
+playwright-report/
+test-results/
 package-lock.json
+examples/**/.angular/
+examples/**/dist/
+examples/**/node_modules/
 
 # Chapter content is authored by hand — Prettier reflows Markdown prose, collapses
 # numbered lists inside <Steps>, and flattens fenced code inside <Tab>. Leave it alone.

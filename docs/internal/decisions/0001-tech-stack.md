@@ -6,7 +6,7 @@ Accepted
 
 ## Decision
 
-- Angular 22.0.6 and Angular CLI 22.0.6 are the initial learner-project baseline
+- Angular 22.0.7 and Angular CLI 22.0.7 are the learner-project baseline
 - Node.js 24 LTS, TypeScript 6.0.x and RxJS 7.8.x are the compatible toolchain baseline
 - Angular CLI workspace, 2025 file naming, standalone components, zoneless change detection and TypeScript strict mode
 - Signals/computed for synchronous local and derived state

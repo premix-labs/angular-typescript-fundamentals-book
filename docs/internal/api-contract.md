@@ -16,14 +16,14 @@
 - IDs: positive integers
 - Dates: ISO 8601 UTC strings
 
-| Method | Route | Success | Expected Errors |
-| --- | --- | --- | --- |
-| `GET` | `/api/v1/products` | `200` list | `400` invalid filter |
-| `GET` | `/api/v1/products/{id}` | `200` item | `404` |
-| `POST` | `/api/v1/products` | `201` + Location | `400`, `409` duplicate SKU |
-| `PUT` | `/api/v1/products/{id}` | `200` item | `400`, `404`, `409` |
-| `PATCH` | `/api/v1/products/{id}/stock` | `204` | `400`, `404` |
-| `PATCH` | `/api/v1/products/{id}/status` | `204` | `400`, `404` |
+| Method  | Route                          | Success          | Expected Errors            |
+| ------- | ------------------------------ | ---------------- | -------------------------- |
+| `GET`   | `/api/v1/products`             | `200` list       | `400` invalid filter       |
+| `GET`   | `/api/v1/products/{id}`        | `200` item       | `404`                      |
+| `POST`  | `/api/v1/products`             | `201` + Location | `400`, `409` duplicate SKU |
+| `PUT`   | `/api/v1/products/{id}`        | `200` item       | `400`, `404`, `409`        |
+| `PATCH` | `/api/v1/products/{id}/stock`  | `204`            | `400`, `404`               |
+| `PATCH` | `/api/v1/products/{id}/status` | `204`            | `400`, `404`               |
 
 ไม่มี DELETE; ใช้ `isActive=false` เพื่อเก็บ product record
 
@@ -63,7 +63,7 @@ Rules: SKU normalized/unique case-insensitively, name required, price finite and
 
 Frontend must handle:
 
-- `400`: field validation errors mapped into typed Reactive Form controls/summary
+- `400`: field validation errors mapped into typed Signal Form fields/form summary
 - `404`: route-level not-found screen
 - `409`: conflict banner/form summary, especially duplicate SKU
 - unexpected/network/runtime validation failure: recoverable generic error with retry where appropriate
@@ -73,14 +73,14 @@ Do not render server detail with `innerHTML` or expose stack traces in UI
 
 ## Application Routes
 
-| Route | Screen |
-| --- | --- |
-| `/` | redirect to `/products` |
-| `/products` | list/search/filter |
-| `/products/new` | create form |
-| `/products/:productId` | detail |
-| `/products/:productId/edit` | edit form |
-| `**` | not-found |
+| Route                       | Screen                  |
+| --------------------------- | ----------------------- |
+| `/`                         | redirect to `/products` |
+| `/products`                 | list/search/filter      |
+| `/products/new`             | create form             |
+| `/products/:productId`      | detail                  |
+| `/products/:productId/edit` | edit form               |
+| `**`                        | not-found               |
 
 Product feature routes are lazy loaded after chapter 18.
 

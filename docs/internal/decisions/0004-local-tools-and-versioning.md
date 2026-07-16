@@ -7,7 +7,7 @@ Accepted
 ## Decision
 
 - use Node.js 24 LTS; the initial validated minimum for Angular CLI 22 is Node.js 24.15.0
-- start the learner project with Angular/CLI 22.0.6, TypeScript 6.0.x and RxJS 7.8.x
+- start the learner project with Angular/CLI 22.0.7, TypeScript 6.0.x and RxJS 7.8.x
 - invoke the pinned CLI explicitly for project creation; do not require a global Angular CLI
 - exact Angular/CLI/TypeScript/RxJS/MSW/test versions are pinned by `package-lock.json`
 - use `npm ci` for repeatable validation
@@ -18,7 +18,7 @@ Accepted
 Validated chapter 3 scaffold command:
 
 ```powershell
-npx --yes @angular/cli@22.0.6 new product-catalog-angular --routing --style=css --standalone --strict --zoneless --test-runner=vitest --file-name-style-guide=2025 --skip-git
+npx --yes @angular/cli@22.0.7 new product-catalog-angular --routing --style=css --standalone --strict --zoneless --test-runner=vitest --file-name-style-guide=2025 --skip-git
 ```
 
 The same command works in PowerShell and Bash. Omit `--yes` if the learner should confirm the temporary CLI download interactively.

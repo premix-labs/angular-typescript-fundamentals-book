@@ -5,23 +5,140 @@ chapter: 2
 part: 'Part 1: Angular Foundations'
 icon: wrench
 tags: [nodejs, npm, angular-cli, devtools]
+difficulty: beginner
+prerequisites: ['เข้าใจ Angular framework mental model จากบทที่ 1']
+learningOutcomes: ['ตรวจว่า Node.js, npm และ Angular CLI ตรงกับ toolchain ของหนังสือได้', 'เรียก Angular CLI เวอร์ชันที่ตรึงไว้โดยไม่พึ่ง global installation ได้', 'ใช้ editor, browser console, Network panel และ Angular DevTools เพื่อวินิจฉัยปัญหาได้']
+testedWith: ['Angular CLI 22.0.7 help and scaffold on Node.js 26.4.0 on 2026-07-16']
+lastVerified: 2026-07-16
+status: review
 ---
 
-# เตรียม Node.js 24, npm, Angular CLI 22 และ DevTools
+Angular CLI เป็นโปรแกรม Node.js ที่สร้าง workspace, development server, tests และ production build ถ้า toolchain ของผู้เรียนต่างกันมาก ผลลัพธ์จากคำสั่งเดียวกันอาจสร้างไฟล์หรือ configuration คนละแบบ บทนี้จึงตรวจ environment ก่อนสร้างโปรเจกต์
 
-> สถานะบท: โครงร่างสำหรับพัฒนาต้นฉบับ
+## เป้าหมายของบท
 
-## เป้าหมาย
+หลังจบบท คุณจะมี terminal, Node.js, npm, editor และ browser tools ที่พร้อมสำหรับ Angular 22 และส่งผล environment checklist ที่ตรวจซ้ำได้
 
-- ตรวจ Node.js 24 LTS และ npm ให้ตรงกับเวอร์ชันที่ Angular CLI 22 รองรับ
-- เรียก Angular CLI 22.0.6 แบบทำซ้ำได้โดยไม่ต้องติดตั้ง global CLI
-- เตรียม VS Code, Angular Language Service และ Angular DevTools
-- อ่าน terminal, browser console และ network panel
+บทนี้ยังไม่สร้าง learner project และไม่แก้ไฟล์ใด
 
-## Milestone
+## สิ่งที่ต้องพร้อม
 
-ผ่าน environment checklist โดยยังไม่ติดตั้ง package แบบ global โดยไม่จำเป็น
+- เครื่อง Windows, macOS หรือ Linux ที่ติดตั้งโปรแกรมได้
+- terminal อย่าง PowerShell, Command Prompt, Terminal หรือ shell ที่ใช้ Bash
+- สิทธิ์ติดตั้ง editor extension และ browser extension
+
+## Toolchain ที่หนังสือใช้
+
+| เครื่องมือ | Baseline | เหตุผล |
+| --- | --- | --- |
+| Angular และ Angular CLI | 22.0.7 | ทำให้ generated files และคำสั่งตรงกัน |
+| Node.js | 24 LTS | เป็น LTS baseline ของ learner project |
+| TypeScript | 6.0.x | อยู่ในช่วงที่ Angular 22.0.x รองรับ |
+| RxJS | 7.8.x | ใช้กับ Router และ HttpClient ในบทหลัง |
+| Test runner | Vitest | เป็นเส้นทางที่ Angular CLI สร้างให้โปรเจกต์นี้ |
+
+Angular 22.0.x รองรับ Node.js หลายช่วง แต่หนังสือเลือก Node.js 24 LTS เพื่อให้ทุกคนเริ่มจาก baseline เดียวกัน Patch version จริงจะถูกตรึงใน `package-lock.json` หลังสร้างโปรเจกต์
+
+## ติดตั้ง Node.js 24 LTS
+
+ดาวน์โหลด Node.js 24 LTS จากเว็บไซต์ Node.js ทางการ หรือใช้ version manager ที่คุณดูแลอยู่แล้ว หลีกเลี่ยง installer จากเว็บไซต์ที่ไม่ทราบแหล่งที่มา เพราะ Node.js จะรัน package scripts บนเครื่องของคุณ
+
+หลังติดตั้ง ให้ปิดและเปิด terminal ใหม่แล้วรันคำสั่งต่อไปนี้ ทั้ง PowerShell และ Bash ใช้คำสั่งเดียวกัน:
+
+```bash
+node --version
+npm --version
+```
+
+ผลที่คาดหวัง:
+
+- `node --version` ขึ้นต้นด้วย `v24.`
+- `npm --version` แสดงหมายเลขเวอร์ชันและไม่ขึ้นข้อความว่าไม่พบคำสั่ง
+
+ไม่จำเป็นต้องให้ npm ตรง patch เดียวกันก่อนสร้างโปรเจกต์ เพราะ lockfile จะบันทึก dependency tree ของแอป แต่ควรใช้ npm ที่มากับ Node.js LTS ที่ติดตั้ง
+
+## ตรวจ Angular CLI แบบไม่ติดตั้ง global
+
+หนังสือเรียก CLI ที่ระบุเวอร์ชันผ่าน `npx` เพื่อป้องกัน global CLI คนละเวอร์ชัน:
+
+```bash
+npx --yes @angular/cli@22.0.7 version
+```
+
+`npx` จะดาวน์โหลด CLI ชั่วคราวถ้ายังไม่มีใน cache ส่วน `--yes` อนุญาตการติดตั้ง package ชั่วคราวโดยไม่ถามซ้ำ หากนโยบายขององค์กรต้องให้ตรวจ package ก่อน ให้ตัด `--yes` ออกและยืนยันด้วยตนเอง
+
+ผลที่คาดหวังคือส่วน `Angular CLI` แสดง `22.0.7` Node แสดงเวอร์ชันที่รองรับ และคำสั่งจบโดยไม่มี compatibility error ในบทนี้ยังไม่มี Angular workspace จึงอาจเห็นว่า Angular package หลักไม่มีค่า ซึ่งเป็นเรื่องปกติ
+
+ไม่ต้องรัน `npm install -g @angular/cli` คำสั่ง global ไม่ผิด แต่ทำให้หนังสือควบคุมเวอร์ชันยากขึ้นและไม่จำเป็นกับ workflow นี้
+
+## เตรียม VS Code
+
+ติดตั้ง extension ต่อไปนี้จาก publisher ที่ถูกต้อง:
+
+- Angular Language Service จาก Angular
+- EditorConfig for VS Code หาก environment ของคุณยังไม่รองรับ `.editorconfig`
+
+Angular Language Service ช่วยตรวจ template, completion และการเชื่อมชื่อระหว่าง component กับ template แต่ไม่ได้แทน `npm test` หรือ `npm run build` ถ้า editor ไม่แจ้ง error ก็ยังต้องรันคำสั่งตรวจจริง
+
+เปิด integrated terminal ด้วยเมนู **Terminal → New Terminal** แล้วตรวจว่า working directory เป็นตำแหน่งที่คุณตั้งใจจะสร้างโปรเจกต์ ห้ามวางโปรเจกต์ไว้ใน `node_modules` หรือ directory ของโปรเจกต์อื่น
+
+## เตรียม browser tools
+
+Chrome, Edge และ Firefox มี developer tools สำหรับหนังสือเล่มนี้ เราจะใช้เครื่องมือหลักสามส่วน:
+
+1. **Console** ดู uncaught error และข้อความจาก application
+2. **Network** ดู URL, method, status และ response ของ HTTP request
+3. **Elements** ตรวจ DOM, semantic element และ accessibility attributes
+
+ติดตั้ง Angular DevTools จาก extension store ทางการของ browser เมื่อแอปทำงานแบบ development จะมี Angular tab สำหรับดู component tree, injector tree, Router tree และ profiler
+
+ใน Windows/Linux เปิด DevTools ได้ด้วย `F12` หรือ `Ctrl+Shift+I` ส่วน macOS ใช้ `Cmd+Option+I` บางเครื่องอาจต้องกด `Fn` ร่วมด้วย
+
+## Environment checklist
+
+บันทึกผลของคำสั่งต่อไปนี้ไว้ในโน้ตของคุณ:
+
+```bash
+node --version
+npm --version
+npx --yes @angular/cli@22.0.7 version
+```
+
+Checklist ผ่านเมื่อ:
+
+- Node อยู่ในช่วงที่ Angular 22 รองรับและ baseline ของคุณคือ Node 24 LTS
+- Angular CLI แสดง `22.0.7`
+- VS Code เห็น Angular Language Service
+- browser เปิด Console และ Network panel ได้
+- ไม่มีความจำเป็นต้องพึ่ง global Angular CLI
+
+## ปัญหาที่พบบ่อย
+
+### Terminal หา `node` หรือ `npm` ไม่พบ
+
+ปิด terminal และ editor แล้วเปิดใหม่ก่อน หากยังไม่พบ ให้ตรวจว่า installer เพิ่ม Node.js ลง `PATH` แล้ว อย่าแก้ `PATH` ด้วยการคัดลอกค่าจากเครื่องผู้อื่น เพราะตำแหน่งติดตั้งอาจต่างกัน
+
+### PowerShell แจ้งว่าไม่อนุญาตให้รัน script
+
+นโยบาย execution policy บางเครื่องบล็อกไฟล์ `npm.ps1` คุณสามารถใช้ `npm.cmd` และ `npx.cmd` ใน PowerShell หรือเปิด Command Prompt terminal ได้ก่อน อย่าเปลี่ยนนโยบายความปลอดภัยของเครื่ององค์กรโดยไม่ได้รับอนุญาต
+
+```powershell
+npm.cmd --version
+npx.cmd --yes @angular/cli@22.0.7 version
+```
+
+### `npx` ดาวน์โหลด package ไม่ได้
+
+ตรวจ proxy, VPN, registry และนโยบายเครือข่ายขององค์กร การรันคำสั่งซ้ำโดยไม่อ่านข้อความ error ไม่ช่วย หาก error ระบุ certificate หรือ registry ให้แก้ configuration กับผู้ดูแลระบบแทนการปิด TLS verification
+
+### Angular CLI แสดงเวอร์ชันอื่น
+
+ตรวจว่าคำสั่งมี `@22.0.7` ครบ การรันเพียง `ng version` อาจเรียก global CLI ที่ติดตั้งไว้และไม่ใช่หลักฐานของเวอร์ชันที่หนังสือใช้
+
+## แบบฝึกหัด
+
+สร้าง environment note ที่มีวันตรวจ, operating system, ผล `node --version`, `npm --version` และ Angular CLI version แล้วเพิ่มหนึ่งบรรทัดว่าคุณจะเปิด Console และ Network panel ด้วยปุ่มใด
 
 ## Checkpoint
 
-ผู้เรียนแสดงผลเวอร์ชัน Node.js, npm และ Angular CLI พร้อมอธิบายว่าจะอ่าน runtime URL จากที่ใด
+คุณพร้อมสร้างโปรเจกต์เมื่อแสดงผล version ทั้งสามรายการได้ อธิบายได้ว่าทำไมหนังสือเรียก CLI ผ่าน `npx @angular/cli@22.0.7` และรู้ว่าจะอ่านข้อความ error จาก terminal, Console หรือ Network panel ตามชนิดของปัญหา

@@ -1,0 +1,93 @@
+:host {
+  display: block;
+  min-height: 100dvh;
+  background: #f5f7f6;
+  color: #17201e;
+}
+
+.app-header,
+.app-main,
+.app-footer {
+  width: min(100% - 2rem, 70rem);
+  margin-inline: auto;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 1.25rem;
+  border-bottom: 1px solid #cbd5d1;
+}
+
+.brand {
+  color: #075e54;
+  font-size: 1.125rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.app-header p,
+.app-footer p {
+  margin: 0.25rem 0 0;
+  color: #52615d;
+}
+
+.chapter-label {
+  padding: 0.35rem 0.6rem;
+  border: 1px solid #d66b48;
+  border-radius: 4px;
+  color: #8a351d;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.app-main {
+  padding-block: 3.5rem;
+}
+
+.page-intro {
+  max-width: 44rem;
+  margin-bottom: 2.5rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.5rem;
+  color: #087f72;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2rem, 8vw, 3.5rem);
+  line-height: 1.05;
+}
+
+.page-intro > p:last-child {
+  margin: 1rem 0 0;
+  color: #52615d;
+  font-size: 1.05rem;
+}
+
+.app-footer {
+  padding-block: 1.25rem 2rem;
+  border-top: 1px solid #cbd5d1;
+}
+
+@media (max-width: 36rem) {
+  .app-header {
+    align-items: flex-start;
+  }
+
+  .chapter-label {
+    white-space: nowrap;
+  }
+
+  .app-main {
+    padding-block: 2.5rem;
+  }
+}

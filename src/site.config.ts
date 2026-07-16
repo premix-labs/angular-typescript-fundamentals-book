@@ -1,12 +1,15 @@
 export const siteConfig = {
   title: 'Angular Fundamentals with TypeScript',
+  shortTitle: 'Angular Fundamentals',
   tagline: 'Build a Structured SPA',
   description:
     'เรียน Angular 22 ผ่าน Product Catalog SPA ด้วย standalone components, zoneless rendering, Signals, Signal Forms, Router, REST API และ automated tests',
   lang: 'th',
   ogImage: '',
-  defaultTheme: 'dark' as 'dark' | 'light',
+  defaultTheme: 'light' as 'dark' | 'light',
   github: '',
+  statusLabel: 'กำลังพัฒนา',
+  lastReviewed: 'กรกฎาคม 2026',
 
   hero: {
     eyebrow: '28 บทสำหรับผู้เริ่มต้น Angular 22',

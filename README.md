@@ -4,7 +4,13 @@
 
 ผู้เรียนจะสร้าง `product-catalog-angular` ด้วย Angular CLI 22, standalone components และ zoneless change detection โปรเจกต์เริ่มจาก local data ก่อนเชื่อม contract-compatible mock API และสามารถสลับไป `ProductCatalog.Api` ผ่าน environment configuration
 
-Learner-project baseline คือ Angular/CLI 22.0.6, Node.js 24 LTS, TypeScript 6.0.x และ RxJS 7.8.x เวอร์ชันจริงจะถูกตรึงด้วย `package-lock.json`; dependencies ใน root repository เป็นของเว็บไซต์หนังสือ Astro ไม่ใช่ของแอป Angular ผู้เรียน
+Learner-project baseline คือ Angular/CLI 22.0.7, Node.js 24 LTS, TypeScript 6.0.x และ RxJS 7.8.x เวอร์ชันจริงจะถูกตรึงด้วย `package-lock.json`; dependencies ใน root repository เป็นของเว็บไซต์หนังสือ Astro ไม่ใช่ของแอป Angular ผู้เรียน
+
+## Current Development Milestone
+
+- บท 1-4 ของ Part 1 และบท 5 ของ Part 2 เขียนครบในสถานะ needs review
+- progressive snapshots บท 3-5 ตรึง Angular/CLI 22.0.7 และผ่าน Vitest/production build
+- บท 6-28 และ final Product Catalog project ยังอยู่ในแผนพัฒนา
 
 ## Learning Scope
 

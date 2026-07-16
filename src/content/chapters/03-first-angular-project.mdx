@@ -1,27 +1,221 @@
 ---
 title: สร้าง Angular 22 Project แบบ Standalone, Zoneless และ Strict
-description: สร้าง product-catalog-angular ด้วย Angular CLI 22 แล้วตรวจ run, Vitest และ production build
+description: สร้าง product-catalog-angular ด้วย Angular CLI 22 แล้วตรวจ development server, Vitest และ production build
 chapter: 3
 part: 'Part 1: Angular Foundations'
 icon: package-plus
 tags: [angular-cli, standalone, strict, project]
+difficulty: beginner
+prerequisites: ['ผ่าน environment checklist จากบทที่ 2']
+learningOutcomes: ['สร้าง Angular 22 workspace ด้วย CLI เวอร์ชันที่ตรึงไว้ได้', 'ระบุหลักฐานว่าโปรเจกต์เป็น standalone, strict, zoneless และใช้ Vitest ได้', 'รัน development server, tests และ production build พร้อมตรวจผลลัพธ์ได้']
+testedWith: ['Angular CLI 22.0.7 scaffold on Node.js 26.4.0 on 2026-07-16', 'Vitest 4.1.10 with 2 tests and Angular production build on 2026-07-16']
+lastVerified: 2026-07-16
+status: review
 ---
 
-# สร้าง Angular 22 Project แบบ Standalone, Zoneless และ Strict
+บทนี้สร้าง `product-catalog-angular` ซึ่งจะพัฒนาต่อเนื่องไปจนจบเล่ม เราจะตรึง CLI ในคำสั่ง เปิด strict และ zoneless ตั้งแต่ต้น และตรวจทั้ง browser, tests และ production build ก่อนเพิ่ม feature code
 
-> สถานะบท: โครงร่างสำหรับพัฒนาต้นฉบับ
+## เป้าหมายของบท
 
-## เป้าหมาย
+เมื่อจบบท คุณจะมี Angular workspace ที่รันได้และหน้า browser แสดง `Product Catalog setup complete` โดยไม่มี console error
 
-- สร้าง `product-catalog-angular` ด้วย Angular CLI 22.0.6
-- เปิด standalone components, routing, strict mode, zoneless change detection, Vitest และ 2025 file naming ตั้งแต่ต้น
-- อ่านไฟล์สำคัญใน workspace โดยไม่พยายามจำทุก configuration
-- รัน development server, tests และ production build
+## สิ่งที่ต้องพร้อม
 
-## Milestone
+- environment checklist จากบทที่ 2 ผ่านแล้ว
+- terminal อยู่ใน directory ที่ต้องการเก็บโปรเจกต์
+- directory ชื่อ `product-catalog-angular` ยังไม่มี หรือเป็น directory ว่างที่คุณตั้งใจใช้
+- เชื่อมต่อ npm registry ได้สำหรับติดตั้ง dependencies
 
-สร้าง progressive snapshot แรกที่แสดง Product Catalog shell และผ่านคำสั่งตรวจทั้งหมด
+## ไฟล์ที่จะเกิดขึ้นหรือถูกแก้
+
+Angular CLI จะสร้าง workspace ทั้งชุด ไฟล์ที่เราจะอ่านหรือแก้ในบทนี้คือ:
+
+```text
+product-catalog-angular/
+  angular.json
+  package.json
+  package-lock.json
+  tsconfig.json
+  src/
+    main.ts
+    styles.css
+    app/
+      app.config.ts
+      app.routes.ts
+      app.ts
+      app.html
+      app.css
+      app.spec.ts
+```
+
+`package.json` บอก dependency ranges และ scripts ส่วน `package-lock.json` ตรึง dependency tree ที่ติดตั้งจริง จึงต้องเก็บ lockfile ไว้ใน source control
+
+## ทำความเข้าใจตัวเลือกก่อนสร้างโปรเจกต์
+
+- `--standalone` สร้าง application ที่ bootstrap component โดยไม่ใช้ root NgModule
+- `--strict` เปิดการตรวจ TypeScript และ Angular template ที่เข้มขึ้น
+- `--zoneless` ไม่เพิ่ม Zone.js และใช้ notification model ของ Angular
+- `--routing` เตรียม Router configuration แม้ routes ตอนนี้ยังว่าง
+- `--test-runner=vitest` เลือก Vitest แทน Karma
+- `--file-name-style-guide=2025` ใช้ชื่อสั้นอย่าง `app.ts` แทน `app.component.ts`
+- `--skip-git` ไม่สร้าง Git repository ซ้อนใน repository ที่คุณอาจมีอยู่แล้ว
+
+ตัวเลือกเหล่านี้กำหนด architecture ตั้งแต่ scaffold ถ้าเลือกต่างกัน ไฟล์ที่ได้จะไม่ตรงกับหนังสือ
+
+## ขั้นที่ 1: สร้าง workspace
+
+PowerShell และ Bash ใช้คำสั่งเดียวกัน:
+
+```bash
+npx --yes @angular/cli@22.0.7 new product-catalog-angular \
+  --routing \
+  --style=css \
+  --standalone \
+  --strict \
+  --zoneless \
+  --test-runner=vitest \
+  --file-name-style-guide=2025 \
+  --skip-git
+```
+
+อักขระ `\` สำหรับต่อบรรทัดใช้ใน Bash แต่ PowerShell ไม่ใช้ backslash เป็น line continuation หากคัดลอกใน PowerShell ให้ใช้คำสั่งบรรทัดเดียว:
+
+```powershell
+npx --yes @angular/cli@22.0.7 new product-catalog-angular --routing --style=css --standalone --strict --zoneless --test-runner=vitest --file-name-style-guide=2025 --skip-git
+```
+
+CLI จะสร้างไฟล์และติดตั้ง packages ด้วย npm เมื่อสำเร็จให้เข้า workspace:
+
+```bash
+cd product-catalog-angular
+```
+
+ผลที่คาดหวังคือมี `angular.json`, `package.json`, `package-lock.json` และ `src/app/app.ts` ถ้า CLI ถาม analytics จะเลือกตอบหรือไม่ตอบก็ได้ เพราะไม่เปลี่ยนพฤติกรรมของโปรเจกต์
+
+## ขั้นที่ 2: ตรวจ scripts และเวอร์ชันที่ติดตั้ง
+
+เปิด `package.json` แล้วตรวจว่ามี scripts อย่างน้อย `start`, `build` และ `test` จากนั้นรัน:
+
+```bash
+npm ls @angular/core @angular/cli typescript rxjs
+```
+
+ผลที่คาดหวังคือ Angular และ CLI อยู่ในสาย `22.0.x`, TypeScript อยู่ในสาย `6.0.x` และ RxJS อยู่ในสาย `7.8.x` Patch version จริงอาจสูงกว่าค่าต่ำสุดใน range แต่ต้องตรงกับ `package-lock.json`
+
+ตรวจว่า Zone.js ไม่อยู่ใน dependency tree:
+
+```bash
+npm ls zone.js
+```
+
+โปรเจกต์ zoneless ใหม่ควรแสดง `(empty)` และคำสั่งอาจคืน exit code ที่ไม่เป็นศูนย์เพราะ package ไม่ได้ถูกติดตั้ง สิ่งที่เราตรวจคือไม่มี `zone.js` ใน tree ไม่ใช่การบังคับให้คำสั่งนี้ผ่าน
+
+## ขั้นที่ 3: ลด starter page ให้ตรงกับลำดับการเรียน
+
+Angular CLI starter แสดงตัวอย่างหลายแนวคิด รวมถึง Signal ซึ่งเราจะสอนเต็มในบทที่ 10 เพื่อไม่ให้มี future code ใน snapshot ให้แทนที่ `src/app/app.ts` ด้วย component ขั้นต่ำ:
+
+```ts
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  imports: [],
+  templateUrl: './app.html',
+  styleUrl: './app.css',
+})
+export class App {}
+```
+
+`@Component` บอก Angular ว่า class นี้เป็น component ส่วนรายละเอียดของ metadata และ bootstrap จะอธิบายในบทที่ 4 ตอนนี้ให้สังเกตเพียงว่า template และ stylesheet อยู่คนละไฟล์
+
+แทนที่ `src/app/app.html` ด้วย semantic HTML แบบ static:
+
+```html
+<main>
+  <h1>Product Catalog setup complete</h1>
+  <p>Angular 22 แบบ standalone, strict และ zoneless พร้อมใช้งานแล้ว</p>
+</main>
+```
+
+เราไม่ใช้ interpolation หรือ binding ในบทนี้ เพราะ template syntax จะเริ่มใน Part 2 และยังไม่เพิ่ม CSS เพราะ component styles อยู่ในบทที่ 5
+
+## ขั้นที่ 4: ปรับ generated test ให้ตรงกับหน้าจอ
+
+เปิด `src/app/app.spec.ts` แล้วหา test ชื่อ `should render title` เปลี่ยน assertion สุดท้ายเป็น:
+
+```ts
+expect(compiled.querySelector('h1')?.textContent).toContain('Product Catalog setup complete');
+```
+
+Test นี้ตรวจพฤติกรรมที่ผู้ใช้เห็น ไม่ตรวจ private field หรือรายละเอียดภายใน component
+
+## ขั้นที่ 5: รัน development server
+
+```bash
+npm start
+```
+
+รอจน terminal แสดงว่า build สำเร็จ แล้วเปิด URL ที่ CLI แสดงจริง ห้ามเดา port เพราะ CLI อาจเลือก URL อื่นเมื่อ port เริ่มต้นไม่ว่าง
+
+ผลลัพธ์ที่ต้องเห็น:
+
+- browser มีหัวข้อ `Product Catalog setup complete`
+- refresh แล้วยังแสดงหน้าเดิม
+- Console ไม่มี uncaught error
+- terminal ไม่มี template compilation error
+
+หยุด server ด้วย `Ctrl+C` เมื่อเสร็จ
+
+## ขั้นที่ 6: รัน tests และ production build
+
+```bash
+npm test -- --no-watch
+npm run build
+```
+
+ผลที่คาดหวัง:
+
+- Vitest รายงาน 1 test file และ 2 tests ผ่าน
+- production build จบด้วย `Application bundle generation complete`
+- terminal แสดง output location ใต้ `dist/product-catalog-angular`
+
+Development server เหมาะกับการพัฒนาและ rebuild อัตโนมัติ ส่วน production build สร้างไฟล์ที่ optimize แล้วสำหรับนำไป deploy แต่บทนี้ยังไม่สอน deployment
+
+## ปัญหาที่พบบ่อย
+
+### CLI บอกว่า Node.js ไม่รองรับ
+
+กลับไปตรวจ `node --version` กับ compatibility range ของ Angular 22 อย่าฝืนด้วย flag หรือแก้ `package.json` เพราะ CLI อาจทำงานผิดในขั้น build
+
+### Directory มีไฟล์อยู่แล้ว
+
+CLI จะไม่เขียนทับโดยไม่แจ้ง ย้ายไป parent directory ที่ถูกต้องหรือตรวจชื่อ directory ก่อน อย่าใช้ `--force` หากยังไม่รู้ว่าไฟล์ใดจะถูกแทนที่
+
+### Test ยังหา `Hello, product-catalog-angular`
+
+Generated test ยังอ้าง starter เดิม ให้แก้ assertion ใน `src/app/app.spec.ts` ให้ตรงกับ heading ใหม่ ไม่ควรลบ test เพื่อให้คำสั่งผ่าน
+
+### Browser ไม่ตรงกับไฟล์ล่าสุด
+
+ตรวจว่า `npm start` รันจาก `product-catalog-angular` และอ่านข้อความ build ใน terminal ลอง hard refresh หลัง build สำเร็จ โดยไม่เปลี่ยนไป fix port ใน configuration
+
+### `npm ls zone.js` คืน exit code 1
+
+นี่อาจเป็นผลที่ถูกต้องเมื่อ package ไม่มีอยู่ อ่าน output ว่าเป็น `(empty)` แทนการตีความ exit code โดยไม่ดูข้อความ
+
+## แบบฝึกหัด
+
+เปิด `angular.json`, `tsconfig.json` และ `package.json` แล้วหาหลักฐานของ build target, strict TypeScript และ Vitest โดยไม่แก้ configuration เขียนหนึ่งประโยคต่อไฟล์ว่าไฟล์นั้นควบคุมอะไร
 
 ## Checkpoint
 
-ผู้เรียนเปิดแอปจาก URL ที่ CLI แสดง รีเฟรชได้โดยไม่มี console error และอธิบายความต่างระหว่าง development server กับ production build ได้
+บทนี้ผ่านเมื่อ:
+
+- URL ที่ CLI แสดงเปิดและ refresh ได้
+- หน้าจอมี `Product Catalog setup complete`
+- Console ไม่มี uncaught error
+- Vitest ผ่าน 2 tests
+- production build สำเร็จ
+- คุณอธิบายความต่างระหว่าง development server, test runner และ production build ได้
+
+Snapshot อ้างอิงหลังจบบทอยู่ที่ `examples/progressive/chapter-03` แต่บทนี้มีคำสั่งและโค้ดครบโดยไม่ต้องเปิด snapshot
