@@ -51,7 +51,7 @@
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",
     "@playwright/test": "^1.61.1",
-    "@tailwindcss/vite": "^4.3.2",
+    "@tailwindcss/vite": "^4.3.3",
     "@types/node": "^24.0.0",
     "@typescript-eslint/eslint-plugin": "^8.64.0",
     "@typescript-eslint/parser": "^8.64.0",
